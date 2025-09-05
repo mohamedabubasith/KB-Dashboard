@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 // Fix: Use correct imports from @google/genai
 import { GoogleGenAI, Chat } from '@google/genai';
-import { vectorIndexes } from '../../constants';
-import { SpinnerIcon } from '../../constants';
+// Fix: Combine imports from the same module
+import { vectorIndexes, SpinnerIcon } from '../../constants';
 
 type Message = {
     sender: 'user' | 'bot';

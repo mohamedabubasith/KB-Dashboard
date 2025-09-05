@@ -1,13 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { SunIcon, MoonIcon } from '../constants';
 import { Theme } from '../types';
+
+type View = 'dashboard' | 'parse' | 'index' | 'query' | 'settings';
 
 interface HeaderProps {
   toggleTheme: () => void;
   currentTheme: Theme;
+  onLogout: () => void;
+  setCurrentView: (view: View) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ toggleTheme, currentTheme }) => {
+const Header: React.FC<HeaderProps> = ({ toggleTheme, currentTheme, onLogout, setCurrentView }) => {
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setIsProfileOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <header className="flex items-center justify-between h-16 px-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
       <div className="flex items-center">
@@ -28,10 +47,29 @@ const Header: React.FC<HeaderProps> = ({ toggleTheme, currentTheme }) => {
         >
           {currentTheme === 'dark' ? <SunIcon /> : <MoonIcon />}
         </button>
-        <div className="ml-4">
-          <button className="flex items-center">
+        <div className="ml-4 relative" ref={profileRef}>
+          <button onClick={() => setIsProfileOpen(!isProfileOpen)} className="flex items-center focus:outline-none">
             <img className="object-cover w-8 h-8 rounded-full" src="https://via.placeholder.com/32" alt="User" />
           </button>
+          {isProfileOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 z-10">
+              <button
+                onClick={() => {
+                  setCurrentView('settings');
+                  setIsProfileOpen(false);
+                }}
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Settings
+              </button>
+              <button
+                onClick={onLogout}
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </header>

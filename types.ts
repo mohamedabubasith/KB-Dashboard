@@ -1,3 +1,5 @@
+export type Theme = 'light' | 'dark';
+
 export enum OrderStatus {
   Completed = 'Completed',
   Pending = 'Pending',
@@ -7,18 +9,8 @@ export enum OrderStatus {
 export interface Order {
   id: string;
   customerName: string;
-  date: string;
   amount: number;
   status: OrderStatus;
-}
-
-export type Theme = 'light' | 'dark';
-
-export enum ProcessingStatus {
-    Pending = 'Pending',
-    Indexing = 'Indexing',
-    Completed = 'Completed',
-    Failed = 'Failed',
 }
 
 export enum FileStatus {
@@ -26,10 +18,25 @@ export enum FileStatus {
     Parsing = 'Parsing',
     Completed = 'Completed',
 }
-
+  
 export interface UploadableFile {
     file: File;
     status: FileStatus;
+}
+
+export enum ProcessingStatus {
+    Indexing = 'Indexing',
+    Completed = 'Completed',
+    Failed = 'Failed',
+    Pending = 'Pending',
+}
+  
+export interface VectorIndex {
+    id: number;
+    name: string;
+    documents: number;
+    createdAt: string;
+    status: ProcessingStatus;
 }
 
 export interface ParsedDocument {
@@ -37,12 +44,4 @@ export interface ParsedDocument {
     name: string;
     size: string;
     uploadedAt: string;
-}
-
-export interface VectorIndex {
-    id: number;
-    name: string;
-    documents: number;
-    createdAt: string;
-    status: ProcessingStatus;
 }
