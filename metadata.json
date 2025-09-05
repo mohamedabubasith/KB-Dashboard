@@ -1,0 +1,5 @@
+{
+  "name": "Knowledge Base UI",
+  "description": "A modern UI for a Knowledge Base system built with React, TypeScript, and Tailwind CSS. It allows users to parse documents, create vector indexes, and query for information.",
+  "requestFramePermissions": []
+}
